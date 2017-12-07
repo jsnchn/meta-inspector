@@ -4,8 +4,9 @@ function header1($) {
 }
 function anchors($) {
   const urls = []
-  //regex for ftp,http,https,javascript,#
-  const pattern = new RegExp('(((f|ht){1}tp[s]?:\/\/|javascript|#)[-a-zA-Z0-9@:%_\+.~#?&//=;]+)|#','i')
+  //regex for ftp,http,https,javascript,#,mailto
+  //TODO: file extensions not working here
+  const pattern = new RegExp('(((f|ht){1}tp[s]?:\/\/|javascript|#|mailto)[-a-zA-Z0-9@:%_\+.~#?&//=;]+)|#|(\.\w+$)','i')
   $('a').map(function() {
     var href = $(this).attr('href');
     //only unique
