@@ -4,14 +4,15 @@ function header1($) {
 }
 function anchors($) {
   const urls = []
-  const absoluteUrl = new RegExp('(((f|ht){1}tp[s]?:\/\/|javascript|#)[-a-zA-Z0-9@:%_\+.~#?&//=;]+)|#','i')
+  //regex for ftp,http,https,javascript,#
+  const pattern = new RegExp('(((f|ht){1}tp[s]?:\/\/|javascript|#)[-a-zA-Z0-9@:%_\+.~#?&//=;]+)|#','i')
   $('a').map(function() {
     var href = $(this).attr('href');
     //only unique
     if(urls.indexOf(href) === -1){
       //only relative urls
       //TODO: also check if url goes to base domain
-      if (!absoluteUrl.test(href)){
+      if (!pattern.test(href)){
         urls.push(href);
       }
     }
