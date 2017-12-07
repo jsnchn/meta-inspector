@@ -4,9 +4,16 @@ function header1($) {
 }
 function anchors($) {
   const urls = []
+  const absoluteUrl = new RegExp('(((f|ht){1}tp[s]?:\/\/|javascript|#)[-a-zA-Z0-9@:%_\+.~#?&//=;]+)|#','i')
   $('a').map(function() {
-    if(urls.indexOf($(this).attr('href')) === -1){
-      urls.push($(this).attr('href'));
+    var href = $(this).attr('href');
+    //only unique
+    if(urls.indexOf(href) === -1){
+      //only relative urls
+      //TODO: also check if url goes to base domain
+      if (!absoluteUrl.test(href)){
+        urls.push(href);
+      }
     }
   })
   return urls
