@@ -1,13 +1,13 @@
 import Metascraper from 'metascraper'
 import RULES from './rules'
 
-const allRules = Object.assign({},Metascraper.RULES,RULES)
+
 var urlLog = [];
 var catalog = [];
 
-function scrape(domain, path){
+function scrape(domain, path, rules){
   Metascraper
-    .scrapeUrl(domain+path,allRules)
+    .scrapeUrl(domain+path,rules)
     .then((metadata) => {
       console.log('scraped: ',domain, path)
       console.log('data: ',metadata)
@@ -21,15 +21,26 @@ function scrape(domain, path){
       });
       if (continueUrls.length != 0){
         // console.log(continueUrls)
-        continueUrls.map(function(relPath){scrape(domain, relPath);});
+        continueUrls.map(function(relPath){scrape(domain, relPath, rules);});
       }
     })
 }
 
+function omitRules(){
+  const omitRules = ['publisher','type','author','date']
+  omitRules.map(function(key){
+    delete Metascraper.RULES[key]
+  })
+}
+
 function scrapeInit(url){
+  
+  omitRules()
+  const allRules = Object.assign({},Metascraper.RULES,RULES)
+
   var domain = url.match(/http(s?):\/\/([\w]+\.){1}([\w]+\.?)+/i)[0]
   var path = url.replace(domain,'')
-  scrape(domain, path)
+  scrape(domain, path, allRules)
   //TODO: promise out the entire recursion of scrape() to get final catalog
 }
 

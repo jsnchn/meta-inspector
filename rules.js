@@ -1,7 +1,12 @@
+//selectors using https://cheerio.js.org/
+
+//get text from the first h1 tag
 function header1($) {
-  const text = $('h1').text()
+  const text = $('h1').first().text()
   return text
 }
+
+//extract an array of relative urls
 function anchors($) {
   const urls = []
   //regex for ftp,http,https,javascript,#,mailto, file extensions (this will pass on file extensions with query params)
@@ -11,7 +16,6 @@ function anchors($) {
     //only unique
     if(urls.indexOf(href) === -1){
       //only relative urls
-      // console.log(pattern.test(href),href)
       if (href && !pattern.test(href)){
         urls.push(href);
       }
