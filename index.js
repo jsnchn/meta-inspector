@@ -2,24 +2,26 @@ import Metascraper from 'metascraper'
 import RULES from './rules'
 
 const allRules = Object.assign({},Metascraper.RULES,RULES)
-const catalog = [];
+var urlLog = [];
+var catalog = [];
 
 function scrape(domain, path){
   Metascraper
     .scrapeUrl(domain+path,allRules)
     .then((metadata) => {
       console.log('scraped: ',domain, path)
-      console.log('title',metadata.title)
+      console.log('data: ',metadata)
+      catalog.push(metadata)
       var continueUrls = metadata.a.filter(function(el){
-        if (catalog.indexOf(el) == -1){
-          catalog.push(el);
+        if (urlLog.indexOf(el) == -1){
+          urlLog.push(el);
           return true
         }
         return false
       });
       if (continueUrls.length != 0){
-        console.log(continueUrls)
-        // continueUrls.map(function(relPath){scrape(domain, relPath);});
+        // console.log(continueUrls)
+        continueUrls.map(function(relPath){scrape(domain, relPath);});
       }
     })
 }
